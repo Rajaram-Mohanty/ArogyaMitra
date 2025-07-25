@@ -12,7 +12,7 @@ function App() {
   const [userReports, setUserReports] = useState([]);
   const [facilities, setFacilities] = useState([]);
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     // Check if user is logged in
@@ -36,7 +36,7 @@ function App() {
     setMessage('');
 
     try {
-      const response = await axios.post(`${API_URL}/api/register`, formData);
+      const response = await axios.post(`${backendUrl}/api/register`, formData);
       if (response.data.success) {
         setMessage('Registration successful! You can now login.');
         setCurrentView('login');
@@ -55,7 +55,7 @@ function App() {
     setMessage('');
 
     try {
-      const response = await axios.post(`${API_URL}/api/login`, formData);
+      const response = await axios.post(`${backendUrl}/api/login`, formData);
       if (response.data.success) {
         const userData = response.data;
         setUser(userData);
@@ -84,7 +84,7 @@ function App() {
         additional_info: formData.additional_info
       };
 
-      const response = await axios.post(`${API_URL}/api/assess-symptoms`, assessmentData);
+      const response = await axios.post(`${backendUrl}/api/assess-symptoms`, assessmentData);
       if (response.data.success) {
         setDiagnosis(response.data);
         setCurrentView('diagnosis-result');
@@ -100,7 +100,7 @@ function App() {
   const fetchUserReports = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/api/user-reports/${user.user_id}`);
+      const response = await axios.get(`${backendUrl}/api/user-reports/${user.user_id}`);
       if (response.data.success) {
         setUserReports(response.data.reports);
         setCurrentView('reports');
@@ -115,7 +115,7 @@ function App() {
   const fetchNearbyFacilities = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/api/nearby-facilities?location=Current Location`);
+      const response = await axios.get(`${backendUrl}/api/nearby-facilities?location=Current Location`);
       if (response.data.success) {
         setFacilities(response.data.facilities);
         setCurrentView('facilities');
